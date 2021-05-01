@@ -1,6 +1,5 @@
 var helicopterIMG, helicopterSprite, packageSprite,packageIMG;
 var packageBody,ground
-var gamestate = "play";
 const Engine = Matter.Engine;
 const World = Matter.World;
 const Bodies = Matter.Bodies;
@@ -17,11 +16,11 @@ function setup() {
 	rectMode(CENTER);
 	
 
-	packageSprite=createSprite(100, 80, 10,10);
+	packageSprite=createSprite(width/2, 80, 10,10);
 	packageSprite.addImage(packageIMG)
 	packageSprite.scale=0.2
 
-	helicopterSprite=createSprite(100, 200, 10,10);
+	helicopterSprite=createSprite(width/2, 200, 10,10);
 	helicopterSprite.addImage(helicopterIMG)
 	helicopterSprite.scale=0.6
 
@@ -61,15 +60,9 @@ function setup() {
 
  	boxRightBody = Bodies.rectangle(boxPosition+200-20 , boxY, 20,100 , {isStatic:true} );
  	World.add(world, boxRightBody);
-   /* if(keycode === LEFT_ARROW){
-	helicopterSprite.x=helicopterSprite.x-20;
-    }
 
-    if(keycode === RIGHT_ARROW){
-	helicopterSprite.x=helicopterSprite.x+20;
-    }
 
-	*/Engine.run(engine);
+	Engine.run(engine);
   
 }
 
@@ -77,49 +70,37 @@ function setup() {
 function draw() {
   rectMode(CENTER);
   background(0);
- 
+
+
+  Engine.update(engine);
+
+
   packageSprite.x= packageBody.position.x 
   packageSprite.y= packageBody.position.y 
 
-  if(keyDown(LEFT_ARROW)){
-	helicopterSprite.velocityX=helicopterSprite.velocityX-3;
-	packageSprite.X=helicopterSprite.X;
+  if(keyCode === LEFT_ARROW) {
+      	helicopterSprite.x=helicopterSprite.x-20;
+		  Matter.Body.translate(packageBody, {x:-20,y:0});
     }
 
-    if(keyDown(RIGHT_ARROW)){
-	helicopterSprite.velocityX=helicopterSprite.velocityX+3;
-	packageSprite.velocityX=packageSprite.velocityX+3;
+   if(keyCode === RIGHT_ARROW) {
+	    helicopterSprite.x=helicopterSprite.x+20;
+		Matter.Body.translate(packageBody, {x:+20,y:0});
     }
-	
-	
-	/*
+ 
 
-     if(keycode === LEFT_ARROW){
-	helicopterSprite.x=helicopterSprite.x-20;
+   if(keyCode === DOWN_ARROW) {
+	  Matter.Body.setStatic(packageBody,false);
     }
-
-    if(keycode === RIGHT_ARROW){
-	helicopterSprite.x=helicopterSprite.x+20;
-    }
-	//Matter.Body.translate(packageBody, {x:-20,y:0})
-	
-    */
+/*
+	if(packageBody.isTouching(boxBottomBody)){
+		Matter.Body.setStatic(packageBody,true);
+	}
+ 
   
-   // keyPressed();
+  */
   
   drawSprites();
-  
-  
  
 }
-
-/*
-   function keyPressed() {
-	if(keycode === DOWN_ARROW) {
-		Matter.Body.setStatic(packageBody,false);
-	}
-}
-*/
-
-
 
